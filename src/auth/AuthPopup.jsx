@@ -7,7 +7,7 @@ const AuthPopup = ({ open, setOpen, isSignup, setIsSignup }) => {
   const closeModal = () => setOpen(false);
 
   return (
-    <>
+    <div dir="ltr">
       {/* Backdrop */}
       {open && (
         <div
@@ -46,7 +46,7 @@ const AuthPopup = ({ open, setOpen, isSignup, setIsSignup }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
