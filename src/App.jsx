@@ -2,6 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
 import Home from "./pages/Home";
+import AllLessons from './pages/AllLessons';
+import LessonDetails from './pages/LessonDetails';
+import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 
 function App() {
@@ -9,6 +12,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} /> 
+        <Route path="/lessons" element={<AllLessons />} />
+        <Route path="/lesson/:id" element={<LessonDetails />} />
+        <Route path="*" element={<NotFound />} /> 
         <Route path="/profile" element={<Profile/>} />
       </Routes>
     </Router>
