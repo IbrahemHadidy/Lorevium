@@ -6,11 +6,13 @@ import Loading from "@/components/Loading";
 import useGetExamDetails from "@/hooks/useGetExamDetails";
 
 // Exam ID for testing purposes
-const id = "671a785c3fa556fe79e8abc9";
+const id = "685c6b36851f3e0502394124";
 
 // Helper function to format seconds into MM:SS
 const formatTime = (seconds) => {
-	const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+	const m = Math.floor(seconds / 60)
+		.toString()
+		.padStart(2, "0");
 	const s = (seconds % 60).toString().padStart(2, "0");
 	return `${m}:${s}`;
 };
@@ -26,22 +28,24 @@ const StudentExam = () => {
 	const timerRef = useRef(); // reference to timeout for cleanup
 
 	// Custom hook to get exam details and submit answers
-	//TODO: Replace id with actually examId  
-	const { examData, submitAnswers, user } = useGetExamDetails(id);
+	//TODO: Replace id with actually examId
+	const { examData, submitAnswers, user, remainingTime, initialScore } =
+		useGetExamDetails(id);
 
 	// Initialize exam data when it's loaded
 	useEffect(() => {
 		if (!examData || !examData.questions) return;
 
 		const initExam = () => {
-			setAnswers(Array(examData.questions.length).fill(null)); // create empty answers array
-			setScore(0); // reset score
-			setTimeLeft(examData.duration * 60); // set timer in seconds
-			setIsLoading(false); // stop loading
-		};
+			setAnswers(Array(examData.questions.length).fill(null));
+			setScore(initialScore || 0);
+			setIsSubmitted(initialScore !== null); 
+			setTimeLeft(remainingTime ?? examData.duration * 60); 
+			setIsLoading(false);
+			};
 
 		initExam();
-	}, [examData]);
+	}, [examData,remainingTime, initialScore]);
 
 	// Countdown logic
 	useEffect(() => {
@@ -84,9 +88,7 @@ const StudentExam = () => {
 
 	// Navigate to next question
 	const handleNext = () => {
-		setCurrentQuestion((q) =>
-			Math.min(examData.questions.length - 1, q + 1)
-		);
+		setCurrentQuestion((q) => Math.min(examData.questions.length - 1, q + 1));
 	};
 
 	// Submit exam
@@ -139,11 +141,7 @@ const StudentExam = () => {
 						timeLeft={formatTime(0)}
 						isSubmitted={true}
 					/>
-					<ResultSection
-						exam={examData}
-						answers={answers}
-						score={score}
-					/>
+					<ResultSection exam={examData} answers={answers} score={score} />
 				</div>
 			</div>
 		);
@@ -157,12 +155,20 @@ const StudentExam = () => {
 				<div className="flex flex-col">
 					<span className="text-lg font-bold text-blue-700">Exam</span>
 					<span className="text-sm text-gray-950">{examData.title}</span>
-					<span className="text-xs text-gray-500">Student: {user?.fullName}</span>
-					<span className="text-xs text-gray-600 mt-1">{examData.description}</span>
+					<span className="text-xs text-gray-500">
+						Student: {user?.fullName}
+					</span>
+					<span className="text-xs text-gray-600 mt-1">
+						{examData.description}
+					</span>
 				</div>
 				<div className="flex flex-col items-end">
-					<span className="text-xs text-gray-600">Duration: {examData.duration} min</span>
-					<span className="text-xs text-gray-600">Class: {examData.classLevel}</span>
+					<span className="text-xs text-gray-600">
+						Duration: {examData.duration} min
+					</span>
+					<span className="text-xs text-gray-600">
+						Class: {examData.classLevel}
+					</span>
 				</div>
 			</header>
 
@@ -173,7 +179,9 @@ const StudentExam = () => {
 					<div
 						className="h-full bg-blue-600 transition-all duration-300"
 						style={{
-							width: `${((currentQuestion + 1) / examData.questions.length) * 100}%`,
+							width: `${
+								((currentQuestion + 1) / examData.questions.length) * 100
+							}%`,
 						}}
 					></div>
 				</div>
