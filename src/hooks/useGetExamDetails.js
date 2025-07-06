@@ -8,6 +8,8 @@ const BASE_API = "https://edu-master-delta.vercel.app";
 // Custom hook to fetch exam details and handle answer submission
 const useGetExamDetails = (id) => {
   const [examData, setExamData] = useState(null); // Store exam and questions
+  const [remainingTime, setRemainingTime] = useState(null);
+	const [initialScore, setInitialScore] = useState(null);
   const { token, user } = useSelector((state) => state.auth); // Get token and user from Redux
 
   useEffect(() => {
@@ -16,7 +18,7 @@ const useGetExamDetails = (id) => {
         token, // Send token in headers for authorization
       },
     };
-
+    
     // Fetch full question data based on question IDs
     const fetchQuestions = async (questionIds) => {
       try {
@@ -59,6 +61,16 @@ const useGetExamDetails = (id) => {
           ...exam,
           questions,
         });
+        // Fetch remaining time
+				const timeRes = await axios.get(`${BASE_API}/studentExam/exams/remaining-time/${id}`, headers);
+				const timeData = timeRes.data.data;
+				const totalSeconds = (timeData.minutes * 60) + timeData.seconds;
+				setRemainingTime(totalSeconds);
+
+        // Fetch score
+				const scoreRes = await axios.get(`${BASE_API}/studentExam/exams/score/${id}`, headers);
+				setInitialScore(scoreRes.data.data.score);
+
       } catch (error) {
         console.log("Error starting exam:", error);
       }
@@ -80,7 +92,7 @@ const useGetExamDetails = (id) => {
           },
         }
       );
-
+      setInitialScore(response.data.data.score);
       console.log("Submitted answers:", response.data);
     } catch (error) {
       console.log("Error submitting answers:", error);
@@ -88,7 +100,7 @@ const useGetExamDetails = (id) => {
   };
 
   // Return all relevant data and functions to be used in component
-  return { examData, submitAnswers, user };
+  return { examData, submitAnswers, user, remainingTime, initialScore };
 };
 
 export default useGetExamDetails;
