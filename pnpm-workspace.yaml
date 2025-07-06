@@ -1,4 +1,6 @@
 onlyBuiltDependencies:
-  - '@swc/core'
+  - '@prisma/engines'
   - '@tailwindcss/oxide'
-  - esbuild
+  - prisma
+  - sharp
+  - unrs-resolver
