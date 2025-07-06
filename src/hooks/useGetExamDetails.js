@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+import { toast  } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 // Base URL for API
 const BASE_API = "https://edu-master-delta.vercel.app";
 
@@ -10,15 +11,15 @@ const useGetExamDetails = (id) => {
   const [examData, setExamData] = useState(null); // Store exam and questions
   const [remainingTime, setRemainingTime] = useState(null);
 	const [initialScore, setInitialScore] = useState(null);
+  const [isExamAlreadySubmitted, setIsExamAlreadySubmitted] = useState(false)
   const { token, user } = useSelector((state) => state.auth); // Get token and user from Redux
-
+  const navigate = useNavigate();
   useEffect(() => {
     const headers = {
       headers: {
         token, // Send token in headers for authorization
       },
     };
-    
     // Fetch full question data based on question IDs
     const fetchQuestions = async (questionIds) => {
       try {
@@ -63,8 +64,10 @@ const useGetExamDetails = (id) => {
         });
         // Fetch remaining time
 				const timeRes = await axios.get(`${BASE_API}/studentExam/exams/remaining-time/${id}`, headers);
-				const timeData = timeRes.data.data;
-				const totalSeconds = (timeData.minutes * 60) + timeData.seconds;
+				const timeData = timeRes.data.data.remainingTime;
+        console.log(timeData);
+        
+				const totalSeconds = (Number(timeData.minutes) * 60) + Number(timeData.seconds);
 				setRemainingTime(totalSeconds);
 
         // Fetch score
@@ -72,13 +75,18 @@ const useGetExamDetails = (id) => {
 				setInitialScore(scoreRes.data.data.score);
 
       } catch (error) {
-        console.log("Error starting exam:", error);
+        console.log("Error starting exam:", error.response.data.message);
+        if (error.response.data.message === "You have already submitted this exam") {
+          setIsExamAlreadySubmitted(true)
+          toast.error("❌ You have already submitted this exam")
+          navigate("/exams")
+        }
       }
     };
 
     startExam(); // Trigger on mount
 
-  }, [id, token]);
+  }, [id, token, navigate]);
 
   // Submit student's answers to backend
   const submitAnswers = async (answers) => {
@@ -100,7 +108,7 @@ const useGetExamDetails = (id) => {
   };
 
   // Return all relevant data and functions to be used in component
-  return { examData, submitAnswers, user, remainingTime, initialScore };
+  return { examData, submitAnswers, user, remainingTime, initialScore, isExamAlreadySubmitted };
 };
 
 export default useGetExamDetails;

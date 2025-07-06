@@ -4,12 +4,15 @@ import Question from "../components/Question";
 import ResultSection from "../components/ResultSection";
 import Loading from "@/components/Loading";
 import useGetExamDetails from "@/hooks/useGetExamDetails";
+import { ToastContainer } from 'react-toastify';
 
 // Exam ID for testing purposes
-const id = "685c6b36851f3e0502394124";
+const id = "686ace921ef8302898c04bb6";
 
 // Helper function to format seconds into MM:SS
 const formatTime = (seconds) => {
+	if (!Number.isFinite(seconds) || seconds < 0) return "00:00";
+
 	const m = Math.floor(seconds / 60)
 		.toString()
 		.padStart(2, "0");
@@ -29,7 +32,7 @@ const StudentExam = () => {
 
 	// Custom hook to get exam details and submit answers
 	//TODO: Replace id with actually examId
-	const { examData, submitAnswers, user, remainingTime, initialScore } =
+	const { examData, submitAnswers, user, remainingTime, initialScore, isExamAlreadySubmitted } =
 		useGetExamDetails(id);
 
 	// Initialize exam data when it's loaded
@@ -37,15 +40,29 @@ const StudentExam = () => {
 		if (!examData || !examData.questions) return;
 
 		const initExam = () => {
+			if (
+				!examData ||
+				!examData.questions ||
+				typeof examData.duration !== "number"
+			) {
+				console.error("Exam data incomplete:", examData);
+				return;
+			}
 			setAnswers(Array(examData.questions.length).fill(null));
 			setScore(initialScore || 0);
-			setIsSubmitted(initialScore !== null); 
-			setTimeLeft(remainingTime ?? examData.duration * 60); 
+			setIsSubmitted(typeof initialScore === "number" && initialScore > 0);
+			const durationInSeconds = examData.duration ? examData.duration * 60 : 0;
+
+			const safeTimeLeft = Number.isFinite(remainingTime)
+				? remainingTime
+				: durationInSeconds;
+
+			setTimeLeft(safeTimeLeft);
 			setIsLoading(false);
-			};
+		};
 
 		initExam();
-	}, [examData,remainingTime, initialScore]);
+	}, [examData, remainingTime, initialScore]);
 
 	// Countdown logic
 	useEffect(() => {
@@ -147,6 +164,9 @@ const StudentExam = () => {
 		);
 	}
 
+	if (isExamAlreadySubmitted) {
+		<ToastContainer />
+	}
 	// Render exam UI
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
