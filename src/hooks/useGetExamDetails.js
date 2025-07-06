@@ -79,7 +79,9 @@ const useGetExamDetails = (id) => {
         if (error.response.data.message === "You have already submitted this exam") {
           setIsExamAlreadySubmitted(true)
           toast.error("❌ You have already submitted this exam")
-          navigate("/exams")
+          setTimeout(() => {
+            navigate("/exams")
+          },3100)
         }
       }
     };
