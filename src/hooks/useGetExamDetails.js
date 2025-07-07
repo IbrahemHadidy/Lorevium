@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { toast  } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 // Base URL for API
 const BASE_API = "https://edu-master-delta.vercel.app";
@@ -10,10 +9,12 @@ const BASE_API = "https://edu-master-delta.vercel.app";
 const useGetExamDetails = (id) => {
   const [examData, setExamData] = useState(null); // Store exam and questions
   const [remainingTime, setRemainingTime] = useState(null);
-	const [initialScore, setInitialScore] = useState(null);
-  const [isExamAlreadySubmitted, setIsExamAlreadySubmitted] = useState(false)
+  const [initialScore, setInitialScore] = useState(null);
+  const [initialPoints, setInitialPoints] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("")
   const { token, user } = useSelector((state) => state.auth); // Get token and user from Redux
   const navigate = useNavigate();
+
   useEffect(() => {
     const headers = {
       headers: {
@@ -63,27 +64,23 @@ const useGetExamDetails = (id) => {
           questions,
         });
         // Fetch remaining time
-				const timeRes = await axios.get(`${BASE_API}/studentExam/exams/remaining-time/${id}`, headers);
-				const timeData = timeRes.data.data.remainingTime;
-        console.log(timeData);
-        
-				const totalSeconds = (Number(timeData.minutes) * 60) + Number(timeData.seconds);
-				setRemainingTime(totalSeconds);
+        const timeRes = await axios.get(`${BASE_API}/studentExam/exams/remaining-time/${id}`, headers);
+        const timeData = timeRes.data.data.remainingTime;
+        const totalSeconds = (Number(timeData.minutes) * 60) + Number(timeData.seconds);
+        setRemainingTime(totalSeconds);
 
         // Fetch score
-				const scoreRes = await axios.get(`${BASE_API}/studentExam/exams/score/${id}`, headers);
-				setInitialScore(scoreRes.data.data.score);
+        const scoreRes = await axios.get(`${BASE_API}/studentExam/exams/score/${id}`, headers);
+        setInitialScore(scoreRes.data.data.score);
 
       } catch (error) {
         console.log("Error starting exam:", error.response.data.message);
-        if (error.response.data.message === "You have already submitted this exam") {
-          setIsExamAlreadySubmitted(true)
-          toast.error("❌ You have already submitted this exam")
+        setErrorMessage(error.response.data.message)
           setTimeout(() => {
             navigate("/exams")
-          },3100)
-        }
+          }, 100)
       }
+
     };
 
     startExam(); // Trigger on mount
@@ -95,14 +92,16 @@ const useGetExamDetails = (id) => {
     try {
       const response = await axios.post(
         `${BASE_API}/studentExam/submit/${id}`,
-        { answers: answers },
+        { answers },
         {
           headers: {
             token,
           },
         }
       );
+      
       setInitialScore(response.data.data.score);
+      setInitialPoints(response.data.data.totalPoints);
       console.log("Submitted answers:", response.data);
     } catch (error) {
       console.log("Error submitting answers:", error);
@@ -110,7 +109,7 @@ const useGetExamDetails = (id) => {
   };
 
   // Return all relevant data and functions to be used in component
-  return { examData, submitAnswers, user, remainingTime, initialScore, isExamAlreadySubmitted };
+  return { examData, submitAnswers, user, remainingTime, initialScore, initialPoints,errorMessage };
 };
 
 export default useGetExamDetails;

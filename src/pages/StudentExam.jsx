@@ -4,10 +4,8 @@ import Question from "../components/Question";
 import ResultSection from "../components/ResultSection";
 import Loading from "@/components/Loading";
 import useGetExamDetails from "@/hooks/useGetExamDetails";
-import { ToastContainer } from 'react-toastify';
-
-// Exam ID for testing purposes
-const id = "686ace921ef8302898c04bb6";
+import { useParams } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 // Helper function to format seconds into MM:SS
 const formatTime = (seconds) => {
@@ -21,7 +19,7 @@ const formatTime = (seconds) => {
 };
 
 const StudentExam = () => {
-	// States
+	const { id } = useParams(); // States
 	const [currentQuestion, setCurrentQuestion] = useState(0); // index of the current question
 	const [answers, setAnswers] = useState([]); // student's answers
 	const [isSubmitted, setIsSubmitted] = useState(false); // if the exam was submitted
@@ -29,11 +27,27 @@ const StudentExam = () => {
 	const [timeLeft, setTimeLeft] = useState(0); // countdown timer (in seconds)
 	const [isLoading, setIsLoading] = useState(true); // loading state
 	const timerRef = useRef(); // reference to timeout for cleanup
-
+	const [hasShownError, setHasShownError] = useState(false);
 	// Custom hook to get exam details and submit answers
-	//TODO: Replace id with actually examId
-	const { examData, submitAnswers, user, remainingTime, initialScore, isExamAlreadySubmitted } =
-		useGetExamDetails(id);
+	const {
+		examData,
+		submitAnswers,
+		user,
+		remainingTime,
+		initialScore,
+		initialPoints,
+		errorMessage,
+	} = useGetExamDetails(id);
+
+	useEffect(() => {
+		if (
+			errorMessage === "You have already submitted this exam" &&
+			!hasShownError
+		) {
+			setHasShownError(true);
+			toast.error("You have already submitted this exam", { icon: "❌ " });
+		}
+	}, [errorMessage, hasShownError]);
 
 	// Initialize exam data when it's loaded
 	useEffect(() => {
@@ -138,6 +152,7 @@ const StudentExam = () => {
 
 		// Submit answers and update state
 		submitAnswers(formattedAnswers);
+		console.log(formattedAnswers);
 		setScore(newScore);
 		setIsSubmitted(true);
 	};
@@ -158,15 +173,12 @@ const StudentExam = () => {
 						timeLeft={formatTime(0)}
 						isSubmitted={true}
 					/>
-					<ResultSection exam={examData} answers={answers} score={score} />
+					<ResultSection exam={examData} answers={answers} score={score} initialPoints={initialPoints}/>
 				</div>
 			</div>
 		);
 	}
 
-	if (isExamAlreadySubmitted) {
-		<ToastContainer />
-	}
 	// Render exam UI
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
