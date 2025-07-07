@@ -26,17 +26,32 @@ import { Link } from 'react-router-dom';
 import { formatLocalDateTime } from '@/lib/utils/formatLocalDateTime';
 import { AlertCircle, Edit, Loader2, Play, PlusCircle, Search, X } from 'lucide-react';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function ExamsPage() {
   const [filter, setFilter] = useState('');
   const { data, isLoading, isError } = useGetAllExamsQuery();
   const scores = useStudentScores(data?.data);
+  const { user } = useSelector((state) => state.auth);
 
   const filteredExams = data?.data.filter(
     (exam) =>
       exam.title.toLowerCase().includes(filter.toLowerCase()) ||
       exam._id.toLowerCase().includes(filter.toLowerCase())
   );
+
+  if (!user) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardContent className="flex flex-col items-center justify-center gap-2 p-6">
+            <AlertCircle className="text-destructive h-6 w-6" />
+            <p className="text-destructive text-center">Please log in first to view lessons</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
