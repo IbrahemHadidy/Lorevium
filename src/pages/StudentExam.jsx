@@ -5,7 +5,7 @@ import ResultSection from "../components/ResultSection";
 import Loading from "@/components/Loading";
 import useGetExamDetails from "@/hooks/useGetExamDetails";
 import { useParams } from "react-router-dom";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 // Helper function to format seconds into MM:SS
 const formatTime = (seconds) => {
@@ -34,8 +34,7 @@ const StudentExam = () => {
 		submitAnswers,
 		user,
 		remainingTime,
-		initialScore,
-		initialPoints,
+		
 		errorMessage,
 	} = useGetExamDetails(id);
 
@@ -63,8 +62,8 @@ const StudentExam = () => {
 				return;
 			}
 			setAnswers(Array(examData.questions.length).fill(null));
-			setScore(initialScore || 0);
-			setIsSubmitted(typeof initialScore === "number" && initialScore > 0);
+			setScore(0);
+			// setIsSubmitted(typeof initialScore === "number" && initialScore > 0);
 			const durationInSeconds = examData.duration ? examData.duration * 60 : 0;
 
 			const safeTimeLeft = Number.isFinite(remainingTime)
@@ -76,7 +75,7 @@ const StudentExam = () => {
 		};
 
 		initExam();
-	}, [examData, remainingTime, initialScore]);
+	}, [examData, remainingTime]);
 
 	// Countdown logic
 	useEffect(() => {
@@ -173,7 +172,7 @@ const StudentExam = () => {
 						timeLeft={formatTime(0)}
 						isSubmitted={true}
 					/>
-					<ResultSection exam={examData} answers={answers} score={score} initialPoints={initialPoints}/>
+					<ResultSection exam={examData} answers={answers} score={score} />
 				</div>
 			</div>
 		);
