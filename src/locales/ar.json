@@ -135,6 +135,50 @@
       "invalidClassLevel": "صف غير صالح"
     }
   },
+  "ForgotPassword": {
+    "formAriaLabel": "نموذج استعادة كلمة المرور",
+    "title": "نسيت كلمة المرور؟",
+    "subtitle": "أدخل بريدك الإلكتروني وسنرسل لك تعليمات لإعادة تعيين كلمة المرور.",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "you@example.com",
+    "sending": "جارٍ الإرسال...",
+    "resetPasswordButton": "إرسال رابط الاستعادة",
+    "rememberPassword": "تذكرت كلمة المرور؟",
+    "loginNow": "تسجيل الدخول الآن",
+    "emailSent": "تحقق من بريدك الإلكتروني",
+    "emailSentDescription": "لقد أرسلنا رمز تحقق لمرة واحدة (OTP) إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد لإعادة تعيين كلمة المرور.",
+    "invalidEmail": "بريد إلكتروني غير صالح"
+  },
+  "ResetPassword": {
+    "formAriaLabel": "نموذج إعادة تعيين كلمة المرور",
+    "title": "إعادة تعيين كلمة المرور",
+    "subtitle": "أدخل بريدك الإلكتروني وكلمة المرور الجديدة لإعادة تعيين حسابك.",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "otp": "رمز التحقق",
+    "newPassword": "كلمة المرور الجديدة",
+    "newPasswordPlaceholder": "أدخل كلمة مرور جديدة",
+    "confirmNewPassword": "تاكيد كلمة المرور الجديدة",
+    "confirmNewPasswordPlaceholder": "اعد كتابة كلمة المرور الجديدة",
+    "resetting": "جارٍ إعادة التعيين...",
+    "resetButton": "إعادة تعيين كلمة المرور",
+    "rememberPassword": "تتذكر كلمة المرور؟",
+    "loginNow": "سجل الدخول الآن",
+    "resetPasswordSuccess": "تم إعادة تعيين كلمة المرور بنجاح",
+    "resetPasswordSuccessDescription": "تمت إعادة تعيين كلمة المرور الخاصة بك بنجاح. يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة.",
+    "Errors": {
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صالح",
+      "requiredField": "هذا الحقل مطلوب",
+      "otpLength": "يجب أن يتكون رمز التحقق من {num} أرقام",
+      "passwordMinLength": "يجب أن تتكون كلمة المرور من {min} أحرف على الأقل",
+      "passwordMaxLength": "يجب ألا تتجاوز كلمة المرور {max} أحرف",
+      "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+      "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+      "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+      "passwordSymbol": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
+      "passwordsMustMatch": "كلمتا المرور غير متطابقتين"
+    }
+  },
   "AdminUsers": {
     "filterPlaceholder": "تصفية حسب الاسم أو البريد...",
     "searchPlaceholder": "ابحث عن المستخدمين...",

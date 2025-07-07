@@ -15,7 +15,7 @@ import { useFormWithValidation } from '@/hooks/use-form-with-validation';
 import { Link } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import { type LoginData, createLoginSchema } from '@/lib/validations/login';
-import { Eye, EyeOff, LoaderCircle, Lock, LogIn, UserRound } from 'lucide-react';
+import { Eye, EyeOff, LoaderCircle, Lock, LogIn, Mail } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -55,7 +55,7 @@ export default function LoginForm({ className, ...props }: React.ComponentProps<
                       {...field}
                       className="ps-10"
                     />
-                    <UserRound className="text-muted-foreground absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2" />
+                    <Mail className="text-muted-foreground absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2" />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -71,9 +71,12 @@ export default function LoginForm({ className, ...props }: React.ComponentProps<
               <FormItem>
                 <div className="flex items-center">
                   <FormLabel htmlFor="password">{t('password')}</FormLabel>
-                  <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
+                  <Link
+                    href="/forgot-password"
+                    className="ml-auto text-sm underline-offset-4 hover:underline"
+                  >
                     {t('forgotPassword')}
-                  </a>
+                  </Link>
                 </div>
                 <FormControl>
                   <div className="relative">

@@ -134,6 +134,50 @@
       "invalidClassLevel": "Invalid class level"
     }
   },
+  "ForgotPassword": {
+    "formAriaLabel": "Forgot password form",
+    "title": "Forgot your password?",
+    "subtitle": "Enter your email and we'll send you instructions to reset your password.",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "sending": "Sending...",
+    "resetPasswordButton": "Send Reset Link",
+    "rememberPassword": "Remembered your password?",
+    "loginNow": "Login now",
+    "emailSent": "Check your email",
+    "emailSentDescription": "We have sent a one-time password (OTP) to your email. Please check your inbox to reset your password.",
+    "invalidEmail": "Invalid email address"
+  },
+  "ResetPassword": {
+    "formAriaLabel": "Reset password form",
+    "title": "Reset your password",
+    "subtitle": "Enter your email and new password to reset your account.",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "otp": "OTP",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter a new password",
+    "confirmNewPassword": "Confirm New Password",
+    "confirmNewPasswordPlaceholder": "Confirm your new password",
+    "resetting": "Resetting...",
+    "resetButton": "Reset Password",
+    "rememberPassword": "Remember your password?",
+    "loginNow": "Log in now",
+    "resetPasswordSuccess": "Password reset successful",
+    "resetPasswordSuccessDescription": "Your password has been reset successfully. You can now log in with your new password.",
+    "Errors": {
+      "invalidEmail": "Please enter a valid email address",
+      "requiredField": "This field is required",
+      "otpLength": "OTP must be exactly {num} digits",
+      "passwordMinLength": "Password must be at least {min} characters",
+      "passwordMaxLength": "Password must be at most {max} characters",
+      "passwordUppercase": "Password must contain at least one uppercase letter",
+      "passwordLowercase": "Password must contain at least one lowercase letter",
+      "passwordNumber": "Password must contain at least one number",
+      "passwordSymbol": "Password must contain at least one special character",
+      "passwordsMustMatch": "Passwords do not match"
+    }
+  },
   "AdminUsers": {
     "filterPlaceholder": "Filter by name or email...",
     "searchPlaceholder": "Search users...",

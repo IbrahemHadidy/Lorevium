@@ -3,6 +3,8 @@ import type {
   ForgotPasswordRequest,
   ForgotPasswordResponse,
   GetProfileResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
   UpdateUserRequest,
   UpdateUserResponse,
 } from '@/lib/types/api/user';
@@ -68,6 +70,19 @@ export const userApi = mainApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    /**
+     * Resets a user's password.
+     * @param data - The new password and reset token.
+     * @returns A response indicating success or failure of the request.
+     */
+    resetPassword: builder.mutation<ResetPasswordResponse, ResetPasswordRequest>({
+      query: ({ data }) => ({
+        url: 'user/reset-password',
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -77,4 +92,5 @@ export const {
   useUpdateUserMutation,
   useDeleteUserMutation,
   useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = userApi;
