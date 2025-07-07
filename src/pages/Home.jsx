@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
 
 const ArrowLeftIcon = (props) => (
 	<svg
@@ -126,7 +125,6 @@ const Home = () => {
 			className="bg-gray-50 dark:bg-gray-950 font-sans min-h-screen"
 			dir="rtl"
 		>
-			<Navbar />
 			{/* Hero Section */}
 			<section className="bg-blue-600 dark:bg-blue-800 text-white">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
