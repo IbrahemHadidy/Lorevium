@@ -38,7 +38,7 @@ const Users = () => {
   axios
     .get("https://edu-master-delta.vercel.app/admin/all-user", {
       headers: {
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYW0zQGdtYWlsLmNvbSIsIl9pZCI6IjY4NWM2YTllODUxZjNlMDUwMjM5NDExOSIsImlhdCI6MTc1MTkwNTU0NywiZXhwIjoxNzUxOTkxOTQ3fQ.NG_4Ot6uSS4cBo6OYs3EdFDOKVYXwYRSWT-O_ETCiVA"
+        token: token
       }
     })
     .then((res) => {
