@@ -1,117 +1,63 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
 
-// Static lesson data provided by the user (simulating an API response)
-const staticLessonsData = {
-    "message": "Lessons fetched successfully",
-    "success": true,
-    "data": [
-        {
-            "_id": "685bb4068bb728a726c41daf",
-            "title": "نسبة وتناسب",
-            "description": "تعلم كيفية استخدام النسب والتناسب في الحياة اليومية وكيفية حل المشكلات باستخدام الضرب التبادلي.",
-            "video": "https://www.youtube.com/watch?v=ZvfD2EGRgZ8",
-            "classLevel": "الصف الأول الثانوي",
-            "price": 65,
-            "isPaid": true,
-            "scheduledDate": "2025-07-01T00:00:00.000Z",
-            "createdBy": "68599234c302e6199bd32146",
-            "createdAt": "2025-06-25T08:32:06.897Z",
-            "updatedAt": "2025-06-25T08:32:06.897Z",
-            "__v": 0
-        },
-        {
-            "_id": "685bb4078bb728a726c41db3",
-            "title": "مقدمة في الرسوم البيانية",
-            "description": "تعرف على كيفية رسم البيانات على المستويات الإحداثية، وفهم الرسوم البيانية الخطية، وتفسير البيانات المرسومة.",
-            "video": "https://www.youtube.com/watch?v=yUCdyT1gW9o",
-            "classLevel": "الصف الأول الثانوي",
-            "price": 50,
-            "isPaid": true,
-            "scheduledDate": "2025-07-03T00:00:00.000Z",
-            "createdBy": "68599234c302e6199bd32146",
-            "createdAt": "2025-06-25T08:32:07.419Z",
-            "updatedAt": "2025-06-25T08:32:07.419Z",
-            "__v": 0
-        },
-        {
-            "_id": "685bb4078bb728a726c41db7",
-            "title": "التعبيرات الجبرية",
-            "description": "تعلم كيفية بناء وتبسيط التعبيرات الجبرية، واستكشاف تطبيقاتها في الحياة الواقعية.",
-            "video": "https://www.youtube.com/watch?v=Cxk7nMRl5Gg",
-            "classLevel": "الصف الأول الثانوي",
-            "price": 55,
-            "isPaid": false, // This one is now free for demonstration
-            "scheduledDate": "2025-07-05T00:00:00.000Z",
-            "createdBy": "68599234c302e6199bd32146",
-            "createdAt": "2025-06-25T08:32:07.967Z",
-            "updatedAt": "2025-06-25T08:32:07.967Z",
-            "__v": 0
-        },
-        {
-            "_id": "685bb4088bb728a726c41dbb",
-            "title": "مراجعة الوحدة: الجبر والحساب",
-            "description": "تراجع هذه الوحدة المفاهيم الأساسية من الوحدة، بما في ذلك أساسيات الجبر والمعادلات والعمليات الحسابية، مع مسائل تدريبية وحلول.",
-            "video": "https://www.youtube.com/watch?v=SwlXKX5gD8A",
-            "classLevel": "الصف الأول الثانوي",
-            "price": 50,
-            "isPaid": true,
-            "scheduledDate": "2025-07-07T00:00:00.000Z",
-            "createdBy": "68599234c302e6199bd32146",
-            "createdAt": "2025-06-25T08:32:08.506Z",
-            "updatedAt": "2025-06-25T08:32:08.506Z",
-            "__v": 0
-        }
-    ],
-    "pagination": {
-        "total": 4,
-        "page": 1,
-        "totalPages": 1
-    }
-};
+const API_URL = 'https://edu-master-delta.vercel.app/lesson';
 
 const AllLessons = () => {
     const [lessons, setLessons] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [paymentMessage, setPaymentMessage] = useState('');
     const [error, setError] = useState('');
+    const { token, user } = useSelector((state) => state.auth);
+    const isAdmin = user?.role === 'admin';
+    const navigate = useNavigate();
+
+    const fetchLessons = async () => {
+        setLoading(true);
+        try {
+            const res = await axios.get(API_URL, {
+                headers: { token },
+                params: isAdmin ? {} : {
+                    isPaid: true,
+                    sortBy: 'scheduledDate',
+                    sortOrder: 'asc',
+                    scheduledAfter: '2025-07-01',
+                    classLevel: user?.classLevel
+                }
+            });
+            setLessons(res.data.data);
+        } catch (err) {
+            console.error(err.response?.data || err.message);
+            setError('فشل في تحميل الدروس');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchLessons = () => {
-            setLoading(true);
-            setError('');
-            setTimeout(() => {
-                try {
-                    if (staticLessonsData.success && staticLessonsData.data) {
-                        const fetchedLessons = staticLessonsData.data.map(lesson => ({
-                            ...lesson,
-                            paidByUser: Math.random() > 0.7 
-                        }));
-                        setLessons(fetchedLessons);
-                    } else {
-                        throw new Error(staticLessonsData.message || "Failed to fetch lessons.");
-                    }
-                } catch (err) {
-                    setError(err.message);
-                } finally {
-                    setLoading(false);
-                }
-            }, 500); 
-        };
+        if (token && user) fetchLessons();
+    }, [token, user]);
 
-        fetchLessons();
-    }, []);
-
-    const handleEnrollAction = (lesson) => {
-        if (!lesson.isPaid || lesson.paidByUser) {
-            // In a real app, you would use React Router's navigate function.
-            // For now, we'll use window.location.href for simplicity.
-            window.location.href = `/lesson/${lesson._id}`;
-            console.log(`Navigating to lesson: ${lesson.title}`);
-        } else {
-
-            setPaymentMessage(`للتسجيل في "${lesson.title}", يجب عليك الدفع أولاً.`);
-            setTimeout(() => setPaymentMessage(''), 4000); // Hide the message after 4 seconds
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`${API_URL}/${id}`, {
+                headers: { token }
+            });
+            toast.success('تم حذف الدرس بنجاح');
+            fetchLessons();
+        } catch (err) {
+            toast.error('فشل في حذف الدرس');
         }
+    };
+
+    const handleEdit = (lesson) => {
+        navigate('/add-lesson', { state: { lesson } });
+    };
+
+    const handleLessonClick = (lessonId) => {
+        navigate(`/lesson/${lessonId}`);
     };
 
     if (loading) {
@@ -121,11 +67,11 @@ const AllLessons = () => {
             </div>
         );
     }
-    
+
     if (error) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-950">
-                <p className="text-xl text-red-500">حدث خطأ: {error}</p>
+                <p className="text-xl text-red-500">{error}</p>
             </div>
         );
     }
@@ -133,22 +79,27 @@ const AllLessons = () => {
     return (
         <div className="bg-gray-50 dark:bg-gray-950 font-sans text-gray-900 dark:text-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8" dir="rtl">
             <div className="max-w-7xl mx-auto">
-                <header className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-2">جميع الدروس المتاحة</h1>
-                    <p className="text-lg text-gray-600 dark:text-gray-400">ابدأ رحلتك التعليمية وتصفح مجموعتنا المختارة من الدروس.</p>
-                </header>
-
-                {paymentMessage && (
-                    <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-md mb-8 text-center shadow-lg" role="alert">
-                        {paymentMessage}
+                <header className="flex justify-between items-center mb-12">
+                    <div>
+                        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-2">
+                            {isAdmin ? 'إدارة الدروس' : 'جميع الدروس المتاحة'}
+                        </h1>
+                        <p className="text-lg text-gray-600 dark:text-gray-400">
+                            {isAdmin ? 'يمكنك تعديل أو حذف الدروس من هنا' : 'ابدأ رحلتك التعليمية الآن'}
+                        </p>
                     </div>
-                )}
+                    {isAdmin && (
+                        <Link to="/add-lesson" className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+                            إضافة درس
+                        </Link>
+                    )}
+                </header>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {lessons.map((lesson) => (
                         <div
                             key={lesson._id}
-                            className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out flex flex-col group"
+                            className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group"
                         >
                             <div className="relative">
                                 <img
@@ -157,7 +108,7 @@ const AllLessons = () => {
                                     className="w-full h-48 object-cover rounded-t-xl"
                                 />
                             </div>
-                            
+
                             <div className="p-5 flex flex-col flex-grow">
                                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight h-14">
                                     {lesson.title}
@@ -165,35 +116,32 @@ const AllLessons = () => {
                                 <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow text-sm">
                                     {lesson.description}
                                 </p>
-                                
+                                <p className="text-sm text-gray-500 mb-2">التاريخ: {lesson.scheduledDate?.slice(0, 10)}</p>
+                                <p className="text-sm text-gray-500 mb-4">السعر: {lesson.price || 'مجانًا'} جنيه</p>
+
                                 <div className="mt-auto space-y-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-                                    {/* Conditional rendering for the enrollment button and price */}
-                                    {lesson.paidByUser ? (
-                                        <button 
-                                            onClick={() => handleEnrollAction(lesson)}
-                                            className="w-full bg-transparent border-2 border-green-500 text-green-500 font-bold py-2 px-4 rounded-lg hover:bg-green-500 hover:text-white transition-colors duration-300"
-                                        >
-                                            اذهب إلى الدرس
-                                        </button>
-                                    ) : !lesson.isPaid ? (
-                                        <button 
-                                            onClick={() => handleEnrollAction(lesson)}
-                                            className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300"
-                                        >
-                                            ابدأ الآن مجاناً
-                                        </button>
-                                    ) : (
-                                        <>
-                                            <p className="text-center text-2xl font-extrabold text-gray-800 dark:text-white">
-                                                {lesson.price} جنيه
-                                            </p>
-                                            <button 
-                                                onClick={() => handleEnrollAction(lesson)}
-                                                className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300"
+                                    {isAdmin ? (
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => handleEdit(lesson)}
+                                                className="flex-1 bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600 transition"
                                             >
-                                                سجل الآن
+                                                تعديل
                                             </button>
-                                        </>
+                                            <button
+                                                onClick={() => handleDelete(lesson._id)}
+                                                className="flex-1 bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition"
+                                            >
+                                                حذف
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={() => handleLessonClick(lesson._id)}
+                                            className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+                                        >
+                                            شاهد الدرس
+                                        </button>
                                     )}
                                 </div>
                             </div>

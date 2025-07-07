@@ -3,8 +3,9 @@ import "./Style/AdminPannel.scss";
 import axios from "axios";
 import { BiSolidShow } from "react-icons/bi";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
-
+import {useNavigate } from "react-router-dom";
 const Users = () => {
+  const navigate = useNavigate();
   const [setApi, getApi] = useState(null);
   const [isLoadingData, setisLoadingData] = useState(false);
   //Here For Pagination setup
@@ -24,27 +25,35 @@ const Users = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    if (!token) {
-      console.error("Token not found in localStorage");
-      return;
-    }
+  if (!token) {
+    console.error("Token not found in localStorage");
+     navigate("/login");
+    return;
+  }
 
-    axios
-      .get("https://edu-master-delta.vercel.app/admin/all-user", {
-        headers: {
-          token: token
-        }
-      })
-      .then((res) => {
-        console.log("Success:", res.data);
-        getApi(res.data.data);
-      })
-      .catch((err) => {
-        console.error("Error:", err.response?.status, err.response?.data || err.message);
-      });
-  }, []);
+  setisLoadingData(true);
+
+  axios
+    .get("https://edu-master-delta.vercel.app/admin/all-user", {
+      headers: {
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYW0zQGdtYWlsLmNvbSIsIl9pZCI6IjY4NWM2YTllODUxZjNlMDUwMjM5NDExOSIsImlhdCI6MTc1MTkwNTU0NywiZXhwIjoxNzUxOTkxOTQ3fQ.NG_4Ot6uSS4cBo6OYs3EdFDOKVYXwYRSWT-O_ETCiVA"
+      }
+    })
+    .then((res) => {
+      console.log("Success:", res.data);
+      getApi(res.data.data);
+    })
+    .catch((err) => {
+      console.error("Error:", err.response?.status, err.response?.data || err.message);
+       navigate("/login");
+    })
+    .finally(() => {
+      setisLoadingData(false);
+    });
+}, []);
+
 
   return (
     <div>
@@ -72,8 +81,8 @@ const Users = () => {
           </div>
           {isLoadingData ? (
             <div className="alarm">
-              <div className="loader">
-                Loading...!
+              <div className="loader ">
+               <h3 className="text-[15px]"> Loading...!</h3>
                 <span></span>
               </div>
             </div>

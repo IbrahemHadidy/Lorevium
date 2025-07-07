@@ -4,11 +4,10 @@ import AllLessons from './pages/AllLessons';
 import LessonDetails from './pages/LessonDetails';
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
-import TotalUsing from "./components/DashBord/AdminPannel/TotalUsing";
-import DashBord from "./components/DashBord/AdminPannel/DashBord";
-import Users from "./components/DashBord/AdminPannel/Users";
-import Maps from "./components/DashBord/AdminPannel/Maps";
-
+import DashBord from "./components/DashBord/AdminPannel/DashBord.jsx"
+import Maps from "./components/DashBord/AdminPannel/Maps.jsx"
+import Users from "./components/DashBord/AdminPannel/Users.jsx"
+import TotalUsing from "./components/DashBord/AdminPannel/TotalUsing.jsx"
 function App() {
   return (
     <Router>
@@ -18,7 +17,7 @@ function App() {
         <Route path="/lesson/:id" element={<LessonDetails />} />
         <Route path="*" element={<NotFound />} /> 
         <Route path="/profile" element={<Profile/>} />
-         {/* Here Related By Page Admin-DashBord */}
+           {/* Here Related By Page Admin-DashBord */}
           <>
           <Route path="/admin/dashbord" element={<DashBord/>} />
           <Route  path="/admin/dashbord"  element={<DashBord />}  children={<Route path="/admin/dashbord" element={<TotalUsing />} />}/>
@@ -26,6 +25,7 @@ function App() {
           <Route  path="/admin/dashbord"  element={<DashBord />}  children={<Route path="/admin/dashbord/maps" element={<Maps />} />}/>
         </>
       </Routes>
+      
     </Router>
   );
 }
