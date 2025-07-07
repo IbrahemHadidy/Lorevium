@@ -1,6 +1,12 @@
 import React from "react";
+import Loading from "./Loading";
 
-const ResultSection = ({ exam, answers, score }) => {
+const ResultSection = ({ exam, answers, score, initialPoints }) => {
+
+  if (!answers || answers.length !== exam.questions.length) {
+    return <Loading text="Loading results ..." />
+  }
+
   // Calculate total possible points (default to 1 if not defined)
   const totalPoints = exam.questions.reduce(
     (sum, q) => sum + (q.points || 1),
@@ -18,12 +24,12 @@ const ResultSection = ({ exam, answers, score }) => {
     <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow p-8 mt-8">
       {/* Display score in terms of number of correct questions */}
       <h2 className="text-2xl font-bold text-center text-green-700 mb-2">
-        Your Score: {score} / {exam.questions.length}
+        Your Score: {score}
       </h2>
 
       {/* Display earned points versus total points */}
       <div className="text-center text-lg text-gray-700 mb-6">
-        Points: <span className="font-bold text-blue-700">{earnedPoints}</span> / {totalPoints}
+        Points: <span className="font-bold text-blue-700">{initialPoints || earnedPoints}</span> / {totalPoints}
       </div>
 
       {/* Loop through each question to show answer status */}
@@ -71,19 +77,6 @@ const ResultSection = ({ exam, answers, score }) => {
                     </span>
                   ))}
                 </div>
-              </div>
-
-              {/* Correct/Incorrect badge */}
-              <div className="md:w-32 text-center">
-                {isCorrect ? (
-                  <span className="inline-block px-4 py-2 bg-green-100 text-green-700 rounded-full font-bold">
-                    Correct
-                  </span>
-                ) : (
-                  <span className="inline-block px-4 py-2 bg-red-100 text-red-700 rounded-full font-bold">
-                    Incorrect
-                  </span>
-                )}
               </div>
             </div>
           );
