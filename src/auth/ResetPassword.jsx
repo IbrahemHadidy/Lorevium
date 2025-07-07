@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'sonner';
 
 const ResetPasswordPopup = ({ email, closeModal }) => {
   const [formData, setFormData] = useState({
@@ -157,9 +156,6 @@ const ResetPasswordPopup = ({ email, closeModal }) => {
           </button>
         </div>
       </div>
-
-      {/* Toast Container */}
-      <ToastContainer />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { Link, useNavigate } from 'react-router-dom';
 
 const API_URL = 'https://edu-master-delta.vercel.app/lesson';

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setToken, setUserInfo } from '../redux/authSlice';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'sonner';
 import ResetPassword from './ResetPassword';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = ({ close, switchMode }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -46,6 +47,7 @@ const LoginForm = ({ close, switchMode }) => {
        
       dispatch(setUserInfo(profileRes.data.data));
       toast.success("Logged in successfully!");
+      if (profileRes.data.data.role === 'admin') navigate("/admin/dashbord");
       close();
     } catch (err) {
       const message = err.response?.data?.message || 'Login failed';

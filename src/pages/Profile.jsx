@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserInfo } from '../redux/authSlice';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../redux/authSlice';
 
@@ -389,9 +388,6 @@ const Profile = () => {
           {deleteLoading ? 'Deleting...' : 'Delete Account'}
         </button>
       </div>
-
-      {/* Toast Container */}
-      <ToastContainer />
     </div>
   );
 };

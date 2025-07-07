@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setToken, setUserInfo } from '../redux/authSlice';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
 
 // Validation function
 const validateSignup = (data) => {
@@ -174,8 +172,6 @@ const SignupForm = ({ close, switchMode}) => {
           Log In
         </button>
       </p>
-      {/* Toast Container */}
-      <ToastContainer />
     </form>
   );
 };

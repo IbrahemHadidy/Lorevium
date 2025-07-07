@@ -4,25 +4,34 @@ import AllLessons from './pages/AllLessons';
 import LessonDetails from './pages/LessonDetails';
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
+import Exams from "./pages/Exams";
+import StudentExam from "./pages/StudentExam";
+import Navbar from "./components/Navbar";
+import AddLessonForm from './pages/AddLessonForm';
 import DashBord from "./components/DashBord/AdminPannel/DashBord.jsx"
 import Maps from "./components/DashBord/AdminPannel/Maps.jsx"
 import Users from "./components/DashBord/AdminPannel/Users.jsx"
 import TotalUsing from "./components/DashBord/AdminPannel/TotalUsing.jsx"
+
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} /> 
+        <Route path="/" element={<Home />} />
         <Route path="/lessons" element={<AllLessons />} />
         <Route path="/lesson/:id" element={<LessonDetails />} />
-        <Route path="*" element={<NotFound />} /> 
-        <Route path="/profile" element={<Profile/>} />
-           {/* Here Related By Page Admin-DashBord */}
-          <>
+        <Route path="/add-lesson" element={<AddLessonForm />} /> 
+        <Route path="/edit-lesson/:id" element={<AddLessonForm />} /> 
+        <Route path="/exams" element={<Exams />} />
+        <Route path="/student-exam/:id" element={<StudentExam />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<NotFound />} />
+        <>
           <Route path="/admin/dashbord" element={<DashBord/>} />
-          <Route  path="/admin/dashbord"  element={<DashBord />}  children={<Route path="/admin/dashbord" element={<TotalUsing />} />}/>
+          <Route path="/admin/dashbord"  element={<DashBord />}  children={<Route path="/admin/dashbord" element={<TotalUsing />} />}/>
           <Route path="/admin/dashbord" element={<DashBord />} children={   <Route path="/admin/dashbord/users" element={<Users />} /> }/>
-          <Route  path="/admin/dashbord"  element={<DashBord />}  children={<Route path="/admin/dashbord/maps" element={<Maps />} />}/>
+          <Route path="/admin/dashbord"  element={<DashBord />}  children={<Route path="/admin/dashbord/maps" element={<Maps />} />}/>
         </>
       </Routes>
       
