@@ -19,8 +19,7 @@ const AuthPopup = ({ open, setOpen, isSignup, setIsSignup }) => {
             className="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md mx-auto transform transition-all"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
           >
-            <div style={{ height: isSignup ? '100vh' : 'auto' }}
-                className="p-6 relative overflow-y-auto">  
+            <div className="p-6 relative overflow-y-auto">  
               
               {/* Close Button (Top Right) */}
               <button
