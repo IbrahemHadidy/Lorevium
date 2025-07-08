@@ -13,17 +13,14 @@ import { Button } from "@/components/ui/button";
 import { useDeleteExamMutation } from "@/lib/api/endpoints/exam";
 import { LoaderCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 
 export default function DeleteExamForm({ _id }) {
-  const navigate = useNavigate();
   const [deleteExam, { isLoading }] = useDeleteExamMutation();
 
   const handleDelete = async () => {
     try {
       await deleteExam({ _id }).unwrap();
       toast.success("Exam deleted successfully");
-      navigate("/login");
     } catch (error) {
       toast.error("Failed to delete exam");
       console.error("Failed to delete exam:", error);
