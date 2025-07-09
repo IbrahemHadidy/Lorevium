@@ -1,3 +1,5 @@
+'use client';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,43 +12,34 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { useDeleteUserMutation } from '@/lib/api/endpoints/user';
-import { useRouter } from '@/lib/i18n/navigation';
-import { LoaderCircle, Trash2 } from 'lucide-react';
+import { useDeleteLessonMutation } from '@/lib/api/endpoints/lesson';
+import { Loader2, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-export default function DeleteUserForm() {
-  const t = useTranslations('RegisterAndUpdate');
-  const router = useRouter();
-  const [deleteUser, { isLoading }] = useDeleteUserMutation();
-
+export default function DeleteLessonDialog({ _id }: { _id: string }) {
+  const t = useTranslations('Lessons');
+  const [deleteLesson, { isLoading }] = useDeleteLessonMutation();
   const handleDelete = async () => {
     try {
-      await deleteUser().unwrap();
+      await deleteLesson({ _id }).unwrap();
       toast.success(t('deletedSuccess'));
-      router.push('/login');
-    } catch (error) {
+    } catch (e) {
       toast.error(t('deleteFailed'));
-      console.error('Failed to delete user:', error);
+      console.error(e);
     }
   };
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" disabled={isLoading}>
+        <Button size="sm" variant="destructive" disabled={isLoading}>
           {isLoading ? (
-            <>
-              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-              {t('deletingAccount')}
-            </>
+            <Loader2 className="mr-1 h-4 w-4 animate-spin" />
           ) : (
-            <>
-              <Trash2 className="mr-2 h-4 w-4" />
-              {t('deleteAccountButton')}
-            </>
-          )}
+            <Trash2 className="mr-1 h-4 w-4" />
+          )}{' '}
+          {isLoading ? t('deleting') : t('Actions.delete')}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -58,16 +51,11 @@ export default function DeleteUserForm() {
           <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete} disabled={isLoading} className="bg-destructive">
             {isLoading ? (
-              <>
-                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                {t('deletingAccount')}
-              </>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <>
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t('deleteAccountButton2')}
-              </>
-            )}
+              <Trash2 className="mr-2 h-4 w-4" />
+            )}{' '}
+            {t('Actions.delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -347,8 +347,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="mb-2 flex w-full flex-col items-center gap-2 py-4">
-        {stats && (
+      {stats && (
+        <div className="mb-2 flex w-full flex-col items-center gap-2 py-4">
           <div className="mb-4 grid w-full grid-cols-2 gap-4 md:grid-cols-4">
             {stats.map((stat, idx) => (
               <div key={idx} className="bg-muted rounded p-4">
@@ -357,8 +357,8 @@ export function DataTable<TData, TValue>({
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
       <div className="rounded-md border">
         {isLoading ? (
           <div className="overflow-x-auto">

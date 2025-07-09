@@ -1,6 +1,6 @@
 import type {
-  AddLessonRequest,
-  AddLessonResponse,
+  CreateLessonRequest,
+  CreateLessonResponse,
   DeleteLessonRequest,
   DeleteLessonResponse,
   GetLessonByIdRequest,
@@ -20,14 +20,14 @@ export const lessonApi = mainApi.injectEndpoints({
     /**
      * Creates a new lesson.
      * @access `Admin` only.
-     * @param lesson - The lesson data to be added.
+     * @param data - The lesson data to be added.
      * @returns The added lesson data and success status.
      */
-    addLesson: builder.mutation<AddLessonResponse, AddLessonRequest>({
-      query: ({ lesson }) => ({
+    createLesson: builder.mutation<CreateLessonResponse, CreateLessonRequest>({
+      query: ({ data }) => ({
         url: 'lesson',
         method: 'POST',
-        body: lesson,
+        body: data,
       }),
       invalidatesTags: [{ type: 'Lesson', id: 'LIST' }],
     }),
@@ -136,7 +136,7 @@ export const lessonApi = mainApi.injectEndpoints({
 });
 
 export const {
-  useAddLessonMutation,
+  useCreateLessonMutation,
   useUpdateLessonMutation,
   useGetPaginatedLessonsQuery,
   useLazyGetPaginatedLessonsQuery,

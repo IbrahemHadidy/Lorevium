@@ -5,7 +5,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="bg-background text-foreground mx-auto flex min-h-screen w-full flex-col items-center">
       <Header />
-      <main className="flex w-full max-w-[1550px] flex-1 flex-col items-center justify-center">
+      <main className="mb-8 flex w-full max-w-[1550px] flex-1 flex-col items-center justify-center">
         {children}
       </main>
       <Footer />

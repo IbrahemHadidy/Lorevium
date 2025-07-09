@@ -3,8 +3,8 @@ import type { Lesson } from '../models/lesson';
 
 //------------------------ REQUESTS -------------------------//
 
-export interface AddLessonRequest {
-  lesson: {
+export interface CreateLessonRequest {
+  data: {
     title: string;
     description: string;
     video: string;
@@ -22,7 +22,6 @@ export interface UpdateLessonRequest {
     video?: string;
     classLevel?: HighSchool;
     price?: number;
-    scheduledDate?: string;
   };
 }
 
@@ -47,7 +46,7 @@ export interface PayLessonRequest {
 
 //------------------------ RESPONSES -------------------------//
 
-export interface AddLessonResponse {
+export interface CreateLessonResponse {
   message: string;
   success: boolean;
   data: Lesson;

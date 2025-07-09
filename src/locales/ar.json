@@ -51,6 +51,17 @@
       "hideColumn": "إخفاء العمود"
     }
   },
+  "NotFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "backHome": "العودة إلى الصفحة الرئيسية"
+  },
+  "Error": {
+    "title": "حدث خطأ ما",
+    "description": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى أو العودة إلى الصفحة الرئيسية.",
+    "tryAgain": "إعادة المحاولة",
+    "backHome": "العودة إلى الصفحة الرئيسية"
+  },
   "Home": {
     "Hero": {
       "title": "مرحبًا بكم في Lorevium",
@@ -311,6 +322,65 @@
       "pointsMin": "يجب ألا تقل الدرجات عن {min}.",
       "pointsMax": "يجب ألا تتجاوز الدرجات {max}.",
       "correctAnswerNotInOptions": "يجب أن تكون الإجابة الصحيحة أحد الخيارات."
+    }
+  },
+  "Lessons": {
+    "title": "الدروس",
+    "addLessonButton": "إضافة درس",
+    "createLessonModalTitle": "إنشاء درس جديد",
+    "editLessonModalTitle": "تعديل الدرس",
+    "currency": "جنيه",
+    "free": "مجاني",
+    "createDialogTitle": "إنشاء درس جديد",
+    "editDialogTitle": "تعديل الدرس",
+    "Actions": {
+      "addLesson": "إضافة درس",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "play": "بدء",
+      "payAndPlay": "الدفع والتشغيل"
+    },
+    "deletedSuccess": "تم حذف الدرس بنجاح.",
+    "deleteFailed": "فشل في حذف الدرس.",
+    "deleting": "جارٍ الحذف...",
+    "deleteConfirmTitle": "هل أنت متأكد؟",
+    "deleteConfirmDescription": "لا يمكن التراجع عن هذا الإجراء.",
+    "cancel": "إلغاء",
+    "noLessons": "لا توجد دروس.",
+    "lessonTitle": "عنوان الدرس",
+    "titlePlaceholder": "أدخل عنوان الدرس",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل وصفًا للدرس",
+    "videoUrl": "رابط الفيديو",
+    "videoPlaceholder": "https://...",
+    "classLevel": "الصف الدراسي",
+    "classLevelPlaceholder": "اختر الصف الدراسي",
+    "price": "السعر",
+    "pricePlaceholder": "اتركه فارغًا إذا كان مجانيًا",
+    "scheduledDate": "تاريخ الجدولة",
+    "formAriaLabel": "نموذج الدرس",
+    "createLessonButton": "إنشاء الدرس",
+    "updateLessonButton": "تحديث الدرس",
+    "creatingLesson": "جارٍ إنشاء الدرس...",
+    "updatingLesson": "جارٍ تحديث الدرس...",
+    "createSuccess": "تم إنشاء الدرس بنجاح!",
+    "updateSuccess": "تم تحديث الدرس بنجاح!",
+    "updateError": "لا يمكن تحديث الدرس. المعرف غير موجود.",
+    "waitingForPayment": "بانتظار تأكيد الدفع...",
+    "Errors": {
+      "load": "فشل في تحميل الدروس. حاول مرة أخرى.",
+      "titleLength": "يجب أن يكون العنوان على الأقل {min} أحرف.",
+      "descriptionLength": "يجب أن يكون الوصف على الأقل {min} أحرف.",
+      "invalidUrl": "الرجاء إدخال رابط صحيح.",
+      "invalidDate": "تنسيق تاريخ غير صالح."
+    },
+    "Columns": {
+      "id": "المعرف",
+      "title": "العنوان",
+      "classLevel": "الصف الدراسي",
+      "scheduledDate": "تاريخ الدرس",
+      "price": "السعر",
+      "actions": "إجراءات"
     }
   },
   "ClassLevel": {

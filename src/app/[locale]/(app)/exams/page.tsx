@@ -1,7 +1,7 @@
 'use client';
 
 import { ProtectedComponent } from '@/components/access/protected-component';
-import DeleteExamForm from '@/components/forms/delete-exam-form';
+import DeleteExamDialog from '@/components/dialogs/delete-exam-dialog';
 import ExamForm from '@/components/forms/exam-form';
 import QuestionsWrapper from '@/components/forms/questions-wrapper';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -26,19 +27,93 @@ import { useStudentScores } from '@/hooks/use-student-scores';
 import { useGetAllExamsQuery } from '@/lib/api/endpoints/exam';
 import { Role } from '@/lib/enums/role';
 import { Link } from '@/lib/i18n/navigation';
+import type { Exam } from '@/lib/types/models/exam';
 import { Question } from '@/lib/types/models/question';
 import { cn } from '@/lib/utils/cn';
 import { formatLocalDateTime } from '@/lib/utils/format-local-date-time';
-import { AlertCircle, Edit, Loader2, Play, PlusCircle, Search, X } from 'lucide-react';
+import { AlertCircle, Edit, Play, PlusCircle, Search, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-export default function AdminPage() {
+function ExamRow({ exam }: { exam: Exam }) {
+  const t = useTranslations('Exams');
+  const locale = useLocale();
+  const tClassLevel = useTranslations('ClassLevel');
+  const { data } = useGetAllExamsQuery();
+  const scores = useStudentScores(data?.data);
+
+  return (
+    <TableRow key={exam._id}>
+      <TableCell>{exam._id}</TableCell>
+      <TableCell>{exam.title}</TableCell>
+      <TableCell>{exam.duration}</TableCell>
+      <TableCell>{tClassLevel(exam.classLevel)}</TableCell>
+      <TableCell>{exam.isPublished ? t('yes') : t('no')}</TableCell>
+      <TableCell>{formatLocalDateTime(exam.startDate, locale)}</TableCell>
+      <TableCell>{formatLocalDateTime(exam.endDate, locale)}</TableCell>
+      <ProtectedComponent requiredRoles={[Role.USER]}>
+        <TableCell>{scores[exam._id] ?? t('loading')}</TableCell>
+      </ProtectedComponent>
+      <ProtectedComponent requiredRoles={[Role.ADMIN]}>
+        <TableCell>
+          <div className="flex items-center gap-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button size="sm" variant="outline">
+                  <PlusCircle className="mr-1 h-4 w-4" />
+                  {t('manageQuestions')}
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('manageQuestionsForExam')}</DialogTitle>
+                </DialogHeader>
+                <QuestionsWrapper
+                  examId={exam._id}
+                  value={(exam.questions as Question[]).map((q) => q._id)}
+                />
+              </DialogContent>
+            </Dialog>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button size="sm" variant="outline">
+                  <>
+                    <Edit className="mr-1 h-4 w-4" />
+                    {t('edit')}
+                  </>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('editExamModalTitle')}</DialogTitle>
+                </DialogHeader>
+                <ExamForm type="update" data={exam} />
+              </DialogContent>
+            </Dialog>
+            <DeleteExamDialog _id={exam._id} />
+          </div>
+        </TableCell>
+      </ProtectedComponent>
+      <ProtectedComponent requiredRoles={[Role.USER]}>
+        <TableCell>
+          <Link href={`/exams/${exam._id}`}>
+            <Button size="sm" variant="default">
+              <>
+                <Play className="mr-1 h-4 w-4" />
+                {t('start')}
+              </>
+            </Button>
+          </Link>
+        </TableCell>
+      </ProtectedComponent>
+    </TableRow>
+  );
+}
+
+export default function ExamsPage() {
   const [filter, setFilter] = useState('');
   const { data, isLoading, isError } = useGetAllExamsQuery();
-  const scores = useStudentScores(data?.data);
   const t = useTranslations('Exams');
-  const tClassLevel = useTranslations('ClassLevel');
   const locale = useLocale();
 
   const isRtl = locale === 'ar';
@@ -51,13 +126,10 @@ export default function AdminPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardContent className="flex flex-col items-center justify-center gap-2 p-6">
-            <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
-            <span className="text-muted-foreground">{t('loading')}</span>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} className="h-48 w-full rounded-md" />
+        ))}
       </div>
     );
   }
@@ -146,70 +218,7 @@ export default function AdminPage() {
         </TableHeader>
         <TableBody>
           {filteredExams?.map((exam) => (
-            <TableRow key={exam._id}>
-              <TableCell>{exam._id}</TableCell>
-              <TableCell>{exam.title}</TableCell>
-              <TableCell>{exam.duration}</TableCell>
-              <TableCell>{tClassLevel(exam.classLevel)}</TableCell>
-              <TableCell>{exam.isPublished ? t('yes') : t('no')}</TableCell>
-              <TableCell>{formatLocalDateTime(exam.startDate, locale)}</TableCell>
-              <TableCell>{formatLocalDateTime(exam.endDate, locale)}</TableCell>
-              <ProtectedComponent requiredRoles={[Role.USER]}>
-                <TableCell>{scores[exam._id] ?? t('loading')}</TableCell>
-              </ProtectedComponent>
-              <ProtectedComponent requiredRoles={[Role.ADMIN]}>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button size="sm" variant="outline">
-                          <PlusCircle className="mr-1 h-4 w-4" />
-                          {t('manageQuestions')}
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>{t('manageQuestionsForExam')}</DialogTitle>
-                        </DialogHeader>
-                        <QuestionsWrapper
-                          examId={exam._id}
-                          value={(exam.questions as Question[]).map((q) => q._id)}
-                        />
-                      </DialogContent>
-                    </Dialog>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button size="sm" variant="outline">
-                          <>
-                            <Edit className="mr-1 h-4 w-4" />
-                            {t('edit')}
-                          </>
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>{t('editExamModalTitle')}</DialogTitle>
-                        </DialogHeader>
-                        <ExamForm type="update" data={exam} />
-                      </DialogContent>
-                    </Dialog>
-                    <DeleteExamForm _id={exam._id} />
-                  </div>
-                </TableCell>
-              </ProtectedComponent>
-              <ProtectedComponent requiredRoles={[Role.USER]}>
-                <TableCell>
-                  <Link href={`/exams/${exam._id}`}>
-                    <Button size="sm" variant="default">
-                      <>
-                        <Play className="mr-1 h-4 w-4" />
-                        {t('start')}
-                      </>
-                    </Button>
-                  </Link>
-                </TableCell>
-              </ProtectedComponent>
-            </TableRow>
+            <ExamRow key={exam._id} exam={exam} />
           ))}
         </TableBody>
       </Table>

@@ -1,10 +1,10 @@
-import ForgotPasswordForm from '@/components/forms/forgot-password-form';
+import LoginForm from '@/components/forms/login-form';
 import { AuthHeader } from '@/components/layout/header';
 import Image from 'next/image';
 
 import loginSideImage from '@/assets/login.webp';
 
-export default function ForgotPasswordPage() {
+export default function LoginPage() {
   return (
     <>
       <div className="relative flex flex-col gap-4 p-6 md:p-10">
@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
 
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <ForgotPasswordForm />
+            <LoginForm />
           </div>
         </div>
       </div>

@@ -2,8 +2,8 @@ import type { User } from '@/lib/types/models/user';
 import { createAction, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface InitialState {
-  isInitialized: boolean;
-  user: User | null;
+  readonly isInitialized: boolean;
+  readonly user: User | null;
 }
 
 const initialState: InitialState = {

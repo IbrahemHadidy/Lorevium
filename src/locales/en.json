@@ -51,6 +51,17 @@
       "hideColumn": "Hide column"
     }
   },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you’re looking for doesn’t exist or has been moved.",
+    "backHome": "Back to Home"
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error has occurred. Please try again or go back to the home page.",
+    "tryAgain": "Try Again",
+    "backHome": "Back to Home"
+  },
   "Home": {
     "Hero": {
       "title": "Welcome to Lorevium",
@@ -310,6 +321,65 @@
       "pointsMin": "Points must be at least {min}.",
       "pointsMax": "Points must not exceed {max}.",
       "correctAnswerNotInOptions": "The correct answer must be one of the options."
+    }
+  },
+  "Lessons": {
+    "title": "Lessons",
+    "addLessonButton": "Add lesson",
+    "createLessonModalTitle": "Create New Lesson",
+    "editLessonModalTitle": "Edit Lesson",
+    "classLevel": "Class Level",
+    "scheduledDate": "Scheduled Date",
+    "price": "Price",
+    "currency": "EGP",
+    "free": "Free",
+    "createDialogTitle": "Create New Lesson",
+    "editDialogTitle": "Edit Lesson",
+    "Actions": {
+      "addLesson": "Add Lesson",
+      "edit": "Edit",
+      "delete": "Delete",
+      "play": "Start",
+      "payAndPlay": "Pay & Play"
+    },
+    "deletedSuccess": "Lesson deleted successfully.",
+    "deleteFailed": "Failed to delete lesson.",
+    "deleting": "Deleting...",
+    "deleteConfirmTitle": "Are you sure?",
+    "deleteConfirmDescription": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "noLessons": "No lessons found.",
+    "lessonTitle": "Lesson title",
+    "titlePlaceholder": "Enter lesson title",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter lesson description",
+    "videoUrl": "Video URL",
+    "videoPlaceholder": "https://...",
+    "classLevelPlaceholder": "Select class level",
+    "pricePlaceholder": "Leave empty if free",
+    "formAriaLabel": "Lesson form",
+    "createLessonButton": "Create lesson",
+    "updateLessonButton": "Update lesson",
+    "creatingLesson": "Creating lesson...",
+    "updatingLesson": "Updating lesson...",
+    "createSuccess": "Lesson created successfully!",
+    "updateSuccess": "Lesson updated successfully!",
+    "updateError": "Cannot update lesson. Missing ID.",
+    "waitingForPayment": "Waiting for payment confirmation...",
+    "Errors": {
+      "load": "Failed to load lessons. Please try again.",
+      "titleLength": "Title must be at least {min} characters.",
+      "descriptionLength": "Description must be at least {min} characters.",
+      "invalidUrl": "Please enter a valid URL.",
+      "invalidDate": "Invalid date format."
+    },
+    "Columns": {
+      "id": "ID",
+      "title": "Title",
+      "classLevel": "Class Level",
+      "scheduledDate": "Scheduled Date",
+      "price": "Price",
+      "actions": "Actions"
     }
   },
   "ClassLevel": {

@@ -9,6 +9,7 @@ export interface Lesson {
   classLevel: HighSchool;
   isPaid?: boolean;
   price?: number;
+  scheduledDate: string;
   createdBy: User | string;
   createdAt: string;
   updatedAt: string;

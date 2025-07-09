@@ -7,7 +7,7 @@ export const mainApi = createApi({
     prepareHeaders: (headers) => {
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('token');
-        if (token) headers.set('token', token);        
+        if (token) headers.set('token', token);
       }
       return headers;
     },

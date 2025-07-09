@@ -1,6 +1,6 @@
 'use client';
 
-import DeleteUserForm from '@/components/forms/delete-user-form';
+import DeleteUserDialog from '@/components/dialogs/delete-user-dialog';
 import UpdateUserForm from '@/components/forms/update-user-form';
 import { useTranslations } from 'next-intl';
 
@@ -16,7 +16,7 @@ export default function ProfileSettingsPage() {
 
       <section className="border-destructive bg-destructive/10 max-w-xl rounded-md border p-4">
         <h2 className="text-destructive mb-4 text-xl font-semibold">{t('dangerZone')}</h2>
-        <DeleteUserForm />
+        <DeleteUserDialog />
       </section>
     </div>
   );

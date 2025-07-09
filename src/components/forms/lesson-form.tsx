@@ -18,40 +18,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { useExamSubmit } from '@/hooks/submitions/use-exam-submit';
+import { useLessonSubmit } from '@/hooks/submitions/use-lesson-submit';
 import { useFormWithValidation } from '@/hooks/use-form-with-validation';
 import { HighSchool } from '@/lib/enums/high-school';
-import type { Exam } from '@/lib/types/models/exam';
-import type { Question } from '@/lib/types/models/question';
 import { cn } from '@/lib/utils/cn';
-import { createExamSchema, type ExamData } from '@/lib/validations/exam';
-import { BookOpen, Clock, FileText, LoaderCircle, PlusCircle, Tag } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { createLessonSchema, type LessonData } from '@/lib/validations/lesson';
+import { BookOpen, DollarSign, FileText, LoaderCircle, PlusCircle, Tag, Video } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
-export default function ExamForm({
-  className,
+export default function LessonForm({
   type,
   data,
+  className,
   ...props
-}: React.ComponentProps<'form'> & { type: 'create' | 'update'; data?: Exam }) {
-  const t = useTranslations('Exams');
+}: {
+  type: 'create' | 'update';
+  data?: LessonData & { _id: string };
+} & React.ComponentProps<'form'>) {
+  const t = useTranslations('Lessons');
   const tClassLevel = useTranslations('ClassLevel');
-  const locale = useLocale();
-  const isRtl = locale === 'ar';
 
-  const form = useFormWithValidation<ExamData>(createExamSchema(t), {
+  const form = useFormWithValidation<LessonData>(createLessonSchema(t), {
     title: data?.title ?? '',
     description: data?.description ?? '',
+    video: data?.video ?? '',
     classLevel: data?.classLevel ?? HighSchool.G_1_SECONDARY,
-    duration: data?.duration ?? 0,
-    startDate: data?.startDate ?? new Date().toISOString(),
-    endDate: data?.endDate ?? new Date().toISOString(),
-    isPublished: data?.isPublished ?? false,
-    questions: data?.questions.map((q) => (q as Question)?._id) ?? [],
+    price: data?.price ?? undefined,
+    scheduledDate: data?.scheduledDate ?? new Date().toISOString(),
   });
 
-  const { submit, isLoading, error } = useExamSubmit({ type, reset: form.reset });
+  const { submit, isLoading, error } = useLessonSubmit({ type, reset: form.reset });
 
   return (
     <Form {...form}>
@@ -68,17 +64,20 @@ export default function ExamForm({
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="title">{t('examTitle')}</FormLabel>
+                <FormLabel htmlFor="title">{t('lessonTitle')}</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       id="title"
-                      type="text"
                       placeholder={t('titlePlaceholder')}
                       {...field}
                       className="ps-10"
                     />
-                    <Tag className="text-muted-foreground absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2" />
+                    <Tag
+                      className={cn(
+                        'text-muted-foreground absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2'
+                      )}
+                    />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -97,7 +96,6 @@ export default function ExamForm({
                   <div className="relative">
                     <Input
                       id="description"
-                      type="text"
                       placeholder={t('descriptionPlaceholder')}
                       {...field}
                       className="ps-10"
@@ -110,55 +108,23 @@ export default function ExamForm({
             )}
           />
 
-          {/* Duration */}
+          {/* Video URL */}
           <FormField
             control={form.control}
-            name="duration"
+            name="video"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="duration">{t('duration')}</FormLabel>
+                <FormLabel htmlFor="video">{t('videoUrl')}</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
-                      id="duration"
-                      type="number"
-                      dir={isRtl ? 'rtl' : 'ltr'}
-                      placeholder={t('durationPlaceholder')}
+                      id="video"
+                      placeholder={t('videoPlaceholder')}
                       {...field}
                       className="ps-10"
                     />
-                    <Clock className="text-muted-foreground absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2" />
+                    <Video className="text-muted-foreground absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2" />
                   </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Start Date */}
-          <FormField
-            control={form.control}
-            name="startDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="startDate">{t('startDate')}</FormLabel>
-                <FormControl>
-                  <DateTimePicker value={field.value} onChange={field.onChange} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* End Date */}
-          <FormField
-            control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="endDate">{t('endDate')}</FormLabel>
-                <FormControl>
-                  <DateTimePicker value={field.value} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -192,19 +158,46 @@ export default function ExamForm({
             )}
           />
 
-          {/* isPublished */}
+          {/* Price */}
           <FormField
             control={form.control}
-            name="isPublished"
+            name="price"
             render={({ field }) => (
-              <FormItem className="flex items-center justify-between">
-                <FormLabel>{t('isPublished')}</FormLabel>
+              <FormItem>
+                <FormLabel htmlFor="price">{t('price')}</FormLabel>
                 <FormControl>
-                  <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  <div className="relative">
+                    <Input
+                      id="price"
+                      type="number"
+                      placeholder={t('pricePlaceholder')}
+                      {...field}
+                      className="ps-10"
+                    />
+                    <DollarSign className="text-muted-foreground absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2" />
+                  </div>
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
+
+          {/* Scheduled Date */}
+          {type === 'create' && (
+            <FormField
+              control={form.control}
+              name="scheduledDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="scheduledDate">{t('scheduledDate')}</FormLabel>
+                  <FormControl>
+                    <DateTimePicker value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           {/* Error message */}
           {(error || form.formState.errors.root?.message) && (
@@ -216,21 +209,21 @@ export default function ExamForm({
             </p>
           )}
 
-          {/* Submit button */}
+          {/* Submit */}
           <Button
             type="submit"
-            className="w-full"
+            className="mt-4 w-full"
             disabled={isLoading || form.formState.isSubmitting}
           >
             {isLoading ? (
               <>
                 <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                {type === 'create' ? t('creatingExam') : t('updatingExam')}
+                {type === 'create' ? t('creatingLesson') : t('updatingLesson')}
               </>
             ) : (
               <>
                 <PlusCircle className="mr-2 h-4 w-4" />
-                {type === 'create' ? t('createExamButton') : t('updateExamButton')}
+                {type === 'create' ? t('createLessonButton') : t('updateLessonButton')}
               </>
             )}
           </Button>

@@ -10,20 +10,20 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { useDeleteExamMutation } from '@/lib/api/endpoints/exam';
+import { useDeleteUserMutation } from '@/lib/api/endpoints/user';
 import { useRouter } from '@/lib/i18n/navigation';
 import { LoaderCircle, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-export default function DeleteExamForm({ _id }: { _id: string }) {
-  const t = useTranslations('Exams');
+export default function DeleteUserDialog() {
+  const t = useTranslations('RegisterAndUpdate');
   const router = useRouter();
-  const [deleteExam, { isLoading }] = useDeleteExamMutation();
+  const [deleteUser, { isLoading }] = useDeleteUserMutation();
 
   const handleDelete = async () => {
     try {
-      await deleteExam({ _id }).unwrap();
+      await deleteUser().unwrap();
       toast.success(t('deletedSuccess'));
       router.push('/login');
     } catch (error) {
@@ -38,13 +38,13 @@ export default function DeleteExamForm({ _id }: { _id: string }) {
         <Button variant="destructive" disabled={isLoading}>
           {isLoading ? (
             <>
-              <LoaderCircle className="mr-1 h-4 w-4 animate-spin" />
-              {t('deletingExam')}
+              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+              {t('deletingAccount')}
             </>
           ) : (
             <>
-              <Trash2 className="mr-1 h-4 w-4" />
-              {t('deleteExamButton')}
+              <Trash2 className="mr-2 h-4 w-4" />
+              {t('deleteAccountButton')}
             </>
           )}
         </Button>
@@ -60,12 +60,12 @@ export default function DeleteExamForm({ _id }: { _id: string }) {
             {isLoading ? (
               <>
                 <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                {t('deletingExam')}
+                {t('deletingAccount')}
               </>
             ) : (
               <>
                 <Trash2 className="mr-2 h-4 w-4" />
-                {t('delete')}
+                {t('deleteAccountButton2')}
               </>
             )}
           </AlertDialogAction>

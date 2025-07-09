@@ -2,9 +2,9 @@ import { HighSchool } from '@/lib/enums/high-school';
 import type { useTranslations } from 'next-intl';
 import { z } from 'zod';
 
-type ExamTranslations = ReturnType<typeof useTranslations<'Exams'>>;
+type Translations = ReturnType<typeof useTranslations<'Exams'>>;
 
-export const createExamSchema = (tExam: ExamTranslations) => {
+export const createExamSchema = (tExam: Translations) => {
   return z
     .object({
       title: z

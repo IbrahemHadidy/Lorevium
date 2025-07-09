@@ -65,7 +65,7 @@ export default async function LocaleLayout({
             disableTransitionOnChange
           >
             <StoreProvider>
-              <Toaster dir={dir} />
+              <Toaster dir={dir} richColors />
               <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
             </StoreProvider>
           </ThemeProvider>
