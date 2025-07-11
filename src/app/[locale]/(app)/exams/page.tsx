@@ -40,7 +40,7 @@ function ExamRow({ exam }: { exam: Exam }) {
   const locale = useLocale();
   const tClassLevel = useTranslations('ClassLevel');
   const { data } = useGetAllExamsQuery();
-  const scores = useStudentScores(data?.data);
+  const { scores, isSubmitted } = useStudentScores(data?.data);
 
   return (
     <TableRow key={exam._id}>
@@ -77,10 +77,8 @@ function ExamRow({ exam }: { exam: Exam }) {
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="sm" variant="outline">
-                  <>
-                    <Edit className="mr-1 h-4 w-4" />
-                    {t('edit')}
-                  </>
+                  <Edit className="mr-1 h-4 w-4" />
+                  {t('edit')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -96,12 +94,38 @@ function ExamRow({ exam }: { exam: Exam }) {
       </ProtectedComponent>
       <ProtectedComponent requiredRoles={[Role.USER]}>
         <TableCell>
-          <Link href={`/exams/${exam._id}`}>
-            <Button size="sm" variant="default">
-              <>
-                <Play className="mr-1 h-4 w-4" />
-                {t('start')}
-              </>
+          <Link
+            href={`/exams/${exam._id}`}
+            className={cn(
+              !exam.isPublished ||
+                new Date(exam.startDate).getTime() > Date.now() ||
+                new Date(exam.endDate).getTime() < Date.now() ||
+                isSubmitted[exam._id]
+                ? 'pointer-events-none'
+                : ''
+            )}
+          >
+            <Button
+              size="sm"
+              variant="default"
+              disabled={
+                !exam.isPublished ||
+                new Date(exam.startDate).getTime() > Date.now() ||
+                new Date(exam.endDate).getTime() < Date.now() ||
+                isSubmitted[exam._id]
+              }
+            >
+              {isSubmitted[exam._id] ? (
+                <>
+                  <AlertCircle className="mr-1 h-4 w-4" />
+                  {t('submitted')}
+                </>
+              ) : (
+                <>
+                  <Play className="mr-1 h-4 w-4" />
+                  {t('start')}
+                </>
+              )}
             </Button>
           </Link>
         </TableCell>

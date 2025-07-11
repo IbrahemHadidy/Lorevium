@@ -4,19 +4,20 @@ import { z } from 'zod';
 
 type Translations = ReturnType<typeof useTranslations<'Questions'>>;
 
-export const createQuestionSchema = (t: Translations) => {
-  return z
+export const createQuestionSchema = (t: Translations) =>
+  z
     .object({
       text: z
         .string()
         .trim()
         .min(3, { message: t('Errors.titleLength', { min: 3 }) })
         .refine((val) => val.length > 0, { message: t('Errors.requiredField') }),
+
       type: z.nativeEnum(QuestionType, {
         required_error: t('Errors.questionTypeRequired'),
         invalid_type_error: t('Errors.invalidQuestionType'),
       }),
-      options: z.array(z.string()).min(2, { message: t('Errors.optionsLength') }),
+      options: z.array(z.string()).optional(),
       correctAnswer: z.string(),
       exam: z.string(),
       points: z.coerce
@@ -24,10 +25,25 @@ export const createQuestionSchema = (t: Translations) => {
         .min(1, { message: t('Errors.pointsMin', { min: 1 }) })
         .max(100, { message: t('Errors.pointsMax', { max: 100 }) }),
     })
-    .refine((data) => data.options.includes(data.correctAnswer), {
-      message: t('Errors.correctAnswerNotInOptions'),
-      path: ['correctAnswer'],
+    .superRefine((data, ctx) => {
+      if (data.type === QuestionType.MULTIPLE_CHOICE) {
+        // 1) must have at least two options
+        if (data.options?.length ?? 0 < 2) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['options'],
+            message: t('Errors.optionsLength'),
+          });
+        }
+        // 2) correctAnswer must be one of the options
+        if (!data.options?.includes(data.correctAnswer)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['correctAnswer'],
+            message: t('Errors.correctAnswerNotInOptions'),
+          });
+        }
+      }
     });
-};
 
 export type QuestionData = z.infer<ReturnType<typeof createQuestionSchema>>;

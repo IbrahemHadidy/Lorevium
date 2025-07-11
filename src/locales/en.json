@@ -238,6 +238,7 @@
     "classLevel": "Class Level",
     "classLevelPlaceholder": "Select class level",
     "isPublished": "Published",
+    "submitted": "Submitted",
     "actions": "Actions",
     "start": "Start",
     "edit": "Edit",
@@ -271,6 +272,20 @@
       "classLevelRequired": "Class level is required.",
       "invalidClassLevel": "Invalid class level selected."
     }
+  },
+  "StudentExam": {
+    "startTitle": "Start Exam",
+    "startButton": "Start",
+    "timeRemaining": "Time Remaining",
+    "timeUp": "Time's up!",
+    "submitButton": "Submit",
+    "starting": "Starting…",
+    "submitting": "Submitting…",
+    "shortAnswerPlaceholder": "Enter your answer here",
+    "true": "True",
+    "false": "False",
+    "submitSuccess": "You have successfully submitted the exam.",
+    "submitError": "An error occurred while submitting the exam."
   },
   "Questions": {
     "text": "Question Text",
@@ -372,6 +387,17 @@
       "descriptionLength": "Description must be at least {min} characters.",
       "invalidUrl": "Please enter a valid URL.",
       "invalidDate": "Invalid date format."
+    },
+    "Lesson": {
+      "Actions": {
+        "payAndWatch": "Pay & Watch"
+      },
+      "waitingForPayment": "Waiting for payment...",
+      "needToPurchase": "You need to purchase this lesson to watch it.",
+      "Errors": {
+        "notFound": "Lesson not found.",
+        "invalidVideo": "Invalid or missing video URL."
+      }
     },
     "Columns": {
       "id": "ID",

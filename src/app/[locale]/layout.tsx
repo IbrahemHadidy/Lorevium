@@ -56,7 +56,7 @@ export default async function LocaleLayout({
       className={cn(ibmArabic.className, openSans.className, ibm.className, cairo.className)}
       suppressHydrationWarning
     >
-      <body className="bg-background text-foreground min-h-screen antialiased">
+      <body className="min-h-screen antialiased">
         <NextIntlClientProvider>
           <ThemeProvider
             attribute="class"

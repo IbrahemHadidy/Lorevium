@@ -226,6 +226,7 @@
     "yes": "نعم",
     "no": "لا",
     "highschool": "المرحلة الثانوية",
+    "submitted": "تم التقديم",
     "actions": "الإجراءات",
     "start": "بدء",
     "edit": "تعديل",
@@ -272,6 +273,20 @@
       "classLevelRequired": "مستوى الصف مطلوب.",
       "invalidClassLevel": "مستوى الصف المحدد غير صالح."
     }
+  },
+  "StudentExam": {
+    "startTitle": "ابدأ الاختبار",
+    "startButton": "ابدأ",
+    "timeRemaining": "الوقت المتبقي",
+    "timeUp": "انتهى الوقت!",
+    "submitButton": "إرسال",
+    "starting": "جاري بدء الاختبار…",
+    "submitting": "جاري الإرسال…",
+    "shortAnswerPlaceholder": "ادخل الاجابة هنا",
+    "true": "صح",
+    "false": "خطأ",
+    "submitSuccess": "لقد قمت بتقديم الامتحان بنجاح.",
+    "submitError": "حدث خطأ اثناء تقديم الامتحان."
   },
   "Questions": {
     "text": "نص السؤال",
@@ -381,6 +396,17 @@
       "scheduledDate": "تاريخ الدرس",
       "price": "السعر",
       "actions": "إجراءات"
+    }
+  },
+  "Lesson": {
+    "Actions": {
+      "payAndWatch": "ادفع وشاهد"
+    },
+    "waitingForPayment": "جارٍ انتظار الدفع...",
+    "needToPurchase": "تحتاج إلى شراء هذا الدرس لمشاهدته.",
+    "Errors": {
+      "notFound": "لم يتم العثور على الدرس.",
+      "invalidVideo": "رابط الفيديو غير صالح أو مفقود."
     }
   },
   "ClassLevel": {
