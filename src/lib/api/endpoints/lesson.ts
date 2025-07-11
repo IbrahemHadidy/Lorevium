@@ -98,7 +98,7 @@ export const lessonApi = mainApi.injectEndpoints({
      * @returns The lesson data and success status.
      */
     getLessonById: builder.query<GetLessonByIdResponse, GetLessonByIdRequest>({
-      query: ({ _id }) => `lessons/${_id}`,
+      query: ({ _id }) => `lesson/${_id}`,
       providesTags: (_result, _error, { _id }) => [{ type: 'Lesson', id: _id }],
     }),
 

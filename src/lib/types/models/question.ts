@@ -6,7 +6,7 @@ export interface Question {
   _id: string;
   text: string;
   type: QuestionType;
-  options: string[];
+  options?: string[];
   correctAnswer: string;
   exam: Exam | string;
   points: number;

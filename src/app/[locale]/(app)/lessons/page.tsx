@@ -18,8 +18,8 @@ import {
   usePayLessonMutation,
 } from '@/lib/api/endpoints/lesson';
 import { Role } from '@/lib/enums/role';
-import { Link } from '@/lib/i18n/navigation';
 import type { Lesson } from '@/lib/types/models/lesson';
+import { extractYouTubeVideoId } from '@/lib/utils/extract-youtube-video-id';
 import { formatLocalDateTime } from '@/lib/utils/format-local-date-time';
 import type { ColumnDef, PaginationState, SortingState } from '@tanstack/react-table';
 import { Edit, Loader, Play, PlusCircle } from 'lucide-react';
@@ -219,12 +219,30 @@ function LessonActions({
 
       <ProtectedComponent requiredRoles={[Role.USER]}>
         {isPurchased || !lesson.isPaid ? (
-          <Link href={`/lessons/${lesson._id}`}>
-            <Button size="sm" disabled={isPurchasedLessonsLoading}>
-              <Play size={16} />
-              {t('Actions.play')}
-            </Button>
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button size="sm" disabled={isPurchasedLessonsLoading}>
+                <Play size={16} />
+                {t('Actions.play')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <h1 className="text-3xl font-bold">{lesson.title}</h1>
+                <p className="text-muted-foreground">{lesson.description}</p>
+              </DialogHeader>
+              <div className="relative h-0 overflow-hidden rounded pb-[56.25%] shadow">
+                <iframe
+                  src={`https://www.youtube.com/embed/${extractYouTubeVideoId(lesson.video)}`}
+                  title={lesson.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute top-0 left-0 h-full w-full"
+                />
+              </div>
+            </DialogContent>
+          </Dialog>
         ) : (
           <Button
             size="sm"

@@ -10,9 +10,11 @@ export interface StartStudentExamRequest {
 export interface SubmitStudentExamRequest {
   _id: string;
   data: {
-    questionId: string;
-    selectedAnswer: string;
-  }[];
+    answers: {
+      questionId: string;
+      selectedAnswer: string;
+    }[];
+  };
 }
 
 export interface GetRemainingTimeRequest {
