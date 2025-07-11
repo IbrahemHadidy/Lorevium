@@ -7,7 +7,7 @@ export interface CreateQuestionRequest {
   data: {
     text: string;
     type: QuestionType;
-    options: string[];
+    options?: string[];
     correctAnswer: string;
     points: number;
     exam: string;

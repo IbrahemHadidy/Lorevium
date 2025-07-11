@@ -3,7 +3,7 @@
 import { useResetPasswordMutation } from '@/lib/api/endpoints/user';
 import { useRouter } from '@/lib/i18n/navigation';
 import { getErrorMessage } from '@/lib/utils/get-error-message';
-import { type ResetPasswordData } from '@/lib/validations/reset-passoword';
+import { type ResetPasswordData } from '@/lib/validations/reset-password';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -17,9 +17,16 @@ export const useResetPasswordSubmit = ({ reset }: { reset: () => void }) => {
   const handleResetPassword = async (data: ResetPasswordData) => {
     setError(null);
     try {
-      await resetPassoword({ data }).unwrap();
-      toast.success(t('resetPassowordSuccess'), {
-        description: t('resetPassowordSuccessDescription'),
+      await resetPassoword({
+        data: {
+          email: data.email,
+          otp: data.otp,
+          newPassword: data.newPassword,
+          cpassword: data.cpassword,
+        },
+      }).unwrap();
+      toast.success(t('Errors.resetPassowordSuccess'), {
+        description: t('Errors.resetPassowordSuccessDescription'),
       });
       reset();
       router.push('/login');

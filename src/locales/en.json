@@ -186,7 +186,9 @@
       "passwordLowercase": "Password must contain at least one lowercase letter",
       "passwordNumber": "Password must contain at least one number",
       "passwordSymbol": "Password must contain at least one special character",
-      "passwordsMustMatch": "Passwords do not match"
+      "passwordsMustMatch": "Passwords do not match",
+      "resetPassowordSuccess": "Password reset successful",
+      "resetPassowordSuccessDescription": "Your password has been reset successfully. You can now log in with your new password."
     }
   },
   "AdminUsers": {

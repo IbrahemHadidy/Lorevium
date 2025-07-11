@@ -23,7 +23,7 @@ export interface ResetPasswordRequest {
   data: {
     email: string;
     otp: string;
-    password: string;
+    newPassword: string;
     cpassword: string;
   };
 }
