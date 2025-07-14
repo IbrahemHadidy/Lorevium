@@ -27,7 +27,6 @@
 
 - View all admins and users (Super Admin only)
 - View all users (Admin only)
-- Responsive UI
 
 ### ✅ Multi-language Support
 
