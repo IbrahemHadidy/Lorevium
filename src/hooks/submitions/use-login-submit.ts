@@ -6,7 +6,6 @@ import { useLazyGetProfileQuery } from '@/lib/api/endpoints/user';
 import { HighSchool } from '@/lib/enums/high-school';
 import { Role } from '@/lib/enums/role';
 import { setUser } from '@/lib/features/auth/auth.slice';
-import { useRouter } from '@/lib/i18n/navigation';
 import { useAppDispatch } from '@/lib/store';
 import { type User } from '@/lib/types/models/user';
 import { getErrorMessage } from '@/lib/utils/get-error-message';
@@ -18,7 +17,6 @@ import { toast } from 'sonner';
 export const useLoginSubmit = ({ reset }: { reset: () => void }) => {
   const t = useTranslations('Login');
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loginUser, { isLoading: isLoggingIn }] = useLoginMutation();
   const [getProfile, { isLoading: isLoadingProfile }] = useLazyGetProfileQuery();
@@ -51,14 +49,6 @@ export const useLoginSubmit = ({ reset }: { reset: () => void }) => {
       dispatch(setUser(profileData));
       reset();
       toast.success(t('loginSuccess'));
-
-      if (profileData.role === Role.SUPER_ADMIN) {
-        router.push('/super-admin');
-      } else if (profileData.role === Role.ADMIN) {
-        router.push('/admin');
-      } else {
-        router.push('/');
-      }
     } catch (err) {
       const message = getErrorMessage(err);
       setError(message);

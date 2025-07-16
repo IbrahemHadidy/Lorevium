@@ -1,6 +1,7 @@
 'use client';
 
 import { Card, CardContent } from '@/components/ui/card';
+import { Role } from '@/lib/enums/role';
 import { useRouter } from '@/lib/i18n/navigation';
 import { useAppSelector } from '@/lib/store';
 import { Loader2 } from 'lucide-react';
@@ -18,7 +19,16 @@ export function PublicAuthRoute({ children }: PublicAuthRouteProps) {
 
   useEffect(() => {
     if (!isInitialized) return;
-    if (user) router.replace('/');
+
+    if (user) {
+      if (user.role === Role.SUPER_ADMIN) {
+        router.push('/super-admin');
+      } else if (user.role === Role.ADMIN) {
+        router.push('/admin');
+      } else {
+        router.push('/lessons');
+      }
+    }
   }, [isInitialized, user, router]);
 
   if (!isInitialized) {
