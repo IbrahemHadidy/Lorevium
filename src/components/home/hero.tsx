@@ -13,7 +13,7 @@ export default function Hero() {
   const { user } = useAppSelector((state) => state.auth);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="fixed inset-0 h-screen w-screen">
         <Image
