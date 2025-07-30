@@ -32,7 +32,7 @@ export default function DeleteExamDialog({ _id }: { _id: string }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" disabled={isLoading}>
+        <Button size="sm" variant="destructive" disabled={isLoading}>
           {isLoading ? (
             <>
               <LoaderCircle className="mr-1 h-4 w-4 animate-spin" />
